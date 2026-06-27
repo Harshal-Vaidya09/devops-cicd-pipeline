@@ -1,4 +1,4 @@
-package cicd_demo;
+package com.harshal.cicddemo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
