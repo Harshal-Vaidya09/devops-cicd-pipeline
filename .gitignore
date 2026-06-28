@@ -1,6 +1,25 @@
+# Maven
 target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Java
 *.class
-*.jar
 *.log
+
+# IDE
 .idea/
 .vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar
+
+# Environment files
+.env
+
+# Build output
+out/

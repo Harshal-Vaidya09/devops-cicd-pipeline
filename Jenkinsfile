@@ -30,6 +30,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                dir('app/cicd-demo') {
+                    sh 'docker build -t cicd-demo:latest .'
+                }
+            }
+        }
     }
 
     post {
