@@ -13,12 +13,12 @@ public class HomeController {
         return new ProjectInfo(
                 "Harshal Vaidya",
                 "Enterprise CI/CD Pipeline",
-                "1.0",
+                "2.0",
                 "Maven",
                 "Jenkins",
                 "Docker",
                 "Kubernetes",
-                "SUCCESS"
+                "DEPLOYED ON KUBERNETES"
         );
     }
 }

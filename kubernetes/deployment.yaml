@@ -19,7 +19,7 @@ spec:
       containers:
       - name: cicd-demo
 
-        image: harshalsvaidyaa/cicd-demo:latest
+        image: harshalsvaidyaa/cicd-demo:v2
 
         imagePullPolicy: Always
 
