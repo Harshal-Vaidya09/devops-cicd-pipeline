@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     tools {
@@ -6,20 +7,16 @@ pipeline {
         maven 'Maven3'
     }
 
+    environment {
+        IMAGE_NAME = "harshalsvaidyaa/cicd-demo"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
                 checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                dir('app/cicd-demo') {
-                    sh 'mvn clean package -DskipTests'
-                }
             }
         }
 
@@ -31,26 +28,66 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
+        stage('Package') {
             steps {
                 dir('app/cicd-demo') {
-                    sh 'docker build -t cicd-demo:latest .'
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                dir('app/cicd-demo') {
+                    sh '''
+                    docker build \
+                    -t $IMAGE_NAME:$IMAGE_TAG \
+                    -t $IMAGE_NAME:latest .
+                    '''
+                }
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'USERNAME',
+                        passwordVariable: 'PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                    echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                    '''
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh '''
+                docker push $IMAGE_NAME:$IMAGE_TAG
+                docker push $IMAGE_NAME:latest
+                '''
+            }
+        }
+
     }
 
     post {
-        always {
-            echo 'Pipeline Finished'
-        }
 
         success {
-            echo 'Build Successful'
+            echo "Pipeline Successful"
         }
 
         failure {
-            echo 'Build Failed'
+            echo "Pipeline Failed"
+        }
+
+        always {
+            cleanWs()
         }
     }
+
 }
