@@ -20,35 +20,23 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
                 dir('app/cicd-demo') {
-                    sh 'mvn test'
+                    sh './mvnw clean package'
                 }
             }
         }
 
-        stage('Package') {
+        stage('Build Docker Image') {
             steps {
                 dir('app/cicd-demo') {
-                    sh 'mvn clean package -DskipTests'
+                    sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
                 }
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                dir('app/cicd-demo') {
-                    sh '''
-                    docker build \
-                    -t $IMAGE_NAME:$IMAGE_TAG \
-                    -t $IMAGE_NAME:latest .
-                    '''
-                }
-            }
-        }
-
-        stage('Docker Login') {
+        stage('Push Docker Image') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -59,17 +47,25 @@ pipeline {
                 ]) {
                     sh '''
                     echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                    docker push $IMAGE_NAME:$IMAGE_TAG
+                    docker logout
                     '''
                 }
             }
         }
 
-        stage('Push Image') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                docker push $IMAGE_NAME:$IMAGE_TAG
-                docker push $IMAGE_NAME:latest
-                '''
+                sh """
+                kubectl set image deployment/cicd-demo \
+                cicd-demo=$IMAGE_NAME:$IMAGE_TAG
+                """
+            }
+        }
+
+        stage('Verify Rollout') {
+            steps {
+                sh 'kubectl rollout status deployment/cicd-demo'
             }
         }
 
@@ -78,16 +74,17 @@ pipeline {
     post {
 
         success {
-            echo "Pipeline Successful"
+            echo "Deployment Successful"
         }
 
         failure {
-            echo "Pipeline Failed"
+            echo "Deployment Failed"
         }
 
         always {
-            cleanWs()
+            sh 'docker image prune -f'
         }
+
     }
 
 }
