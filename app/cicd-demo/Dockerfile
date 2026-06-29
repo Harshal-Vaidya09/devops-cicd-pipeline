@@ -4,9 +4,13 @@ FROM maven:3.9.11-eclipse-temurin-17 AS builder
 WORKDIR /build
 
 COPY pom.xml .
-COPY src ./src
+COPY .mvn .mvn
+COPY mvnw .
+COPY src src
 
-RUN mvn clean package -DskipTests
+RUN chmod +x mvnw
+
+RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Runtime image
 FROM eclipse-temurin:17-jre
