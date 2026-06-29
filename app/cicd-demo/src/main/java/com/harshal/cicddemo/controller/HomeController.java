@@ -17,27 +17,18 @@ public class HomeController {
     @Value("${COMPANY:Unknown}")
     private String company;
 
-    @Value("${DB_USERNAME:Unknown}")
-    private String dbUsername;
-
-    @Value("${DB_PASSWORD:Unknown}")
-    private String dbPassword;
-
     @GetMapping("/")
     public ProjectInfo home() {
 
         return new ProjectInfo(
                 "Harshal Vaidya",
                 appName,
-                "4.0",
                 "Maven",
                 "Jenkins",
                 "Docker",
                 "Kubernetes",
                 environment,
                 company,
-                dbUsername,
-                dbPassword,
                 "DEPLOYED ON KUBERNETES"
         );
     }
