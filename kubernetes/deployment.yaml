@@ -18,8 +18,27 @@ spec:
     spec:
       containers:
       - name: cicd-demo
-        image: harshalsvaidyaa/cicd-demo:v2
+        image: harshalsvaidyaa/cicd-demo:v3
         imagePullPolicy: Always
+
+        env:
+          - name: APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: cicd-demo-config
+                key: APP_NAME
+
+          - name: ENVIRONMENT
+            valueFrom:
+              configMapKeyRef:
+                name: cicd-demo-config
+                key: ENVIRONMENT
+
+          - name: COMPANY
+            valueFrom:
+              configMapKeyRef:
+                name: cicd-demo-config
+                key: COMPANY
 
         ports:
         - containerPort: 8080

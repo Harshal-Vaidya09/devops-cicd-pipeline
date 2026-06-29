@@ -9,11 +9,14 @@ public class ProjectInfo {
     private String ciTool;
     private String container;
     private String orchestrator;
+    private String environment;
+    private String company;
     private String status;
 
     public ProjectInfo(String developer, String application, String version,
                        String buildTool, String ciTool,
-                       String container, String orchestrator, String status) {
+                       String container, String orchestrator, String environment, 
+                       String company, String status) {
         this.developer = developer;
         this.application = application;
         this.version = version;
@@ -21,6 +24,8 @@ public class ProjectInfo {
         this.ciTool = ciTool;
         this.container = container;
         this.orchestrator = orchestrator;
+        this.environment = environment;
+        this.company = company;
         this.status = status;
     }
 
@@ -31,5 +36,7 @@ public class ProjectInfo {
     public String getCiTool() { return ciTool; }
     public String getContainer() { return container; }
     public String getOrchestrator() { return orchestrator; }
+    public String getEnvironment() { return environment; }
+    public String getCompany() { return company; }
     public String getStatus() { return status; }
 }

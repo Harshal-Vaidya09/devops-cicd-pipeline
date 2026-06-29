@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: cicd-demo-config
+
+data:
+  APP_NAME: "Enterprise CI/CD Pipeline"
+  ENVIRONMENT: "Development"
+  COMPANY: "Harshal Labs"
