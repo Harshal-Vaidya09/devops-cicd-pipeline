@@ -20,10 +20,10 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Run Tests') {
             steps {
                 dir('app/cicd-demo') {
-                    sh './mvnw clean package'
+                    sh './mvnw test'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('app/cicd-demo') {
-                    sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+                    sh 'docker build --pull -t $IMAGE_NAME:$IMAGE_TAG .'
                 }
             }
         }
