@@ -11,12 +11,15 @@ public class ProjectInfo {
     private String orchestrator;
     private String environment;
     private String company;
+    private String dbUsername;
+    private String dbPassword;
     private String status;
 
     public ProjectInfo(String developer, String application, String version,
                        String buildTool, String ciTool,
                        String container, String orchestrator, String environment, 
-                       String company, String status) {
+                       String company, String dbUsername, String dbPassword, 
+                       String status) {
         this.developer = developer;
         this.application = application;
         this.version = version;
@@ -26,6 +29,8 @@ public class ProjectInfo {
         this.orchestrator = orchestrator;
         this.environment = environment;
         this.company = company;
+        this.dbUsername = dbUsername;
+        this.dbPassword = dbPassword;
         this.status = status;
     }
 
@@ -38,5 +43,7 @@ public class ProjectInfo {
     public String getOrchestrator() { return orchestrator; }
     public String getEnvironment() { return environment; }
     public String getCompany() { return company; }
+    public String getDbUsername() { return dbUsername; }
+    public String getDbPassword() { return dbPassword; }
     public String getStatus() { return status; }
 }

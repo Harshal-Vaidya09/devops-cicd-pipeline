@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: cicd-demo
-        image: harshalsvaidyaa/cicd-demo:v3
+        image: harshalsvaidyaa/cicd-demo:v4
         imagePullPolicy: Always
 
         env:
@@ -39,6 +39,18 @@ spec:
               configMapKeyRef:
                 name: cicd-demo-config
                 key: COMPANY
+
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: cicd-demo-secret
+                key: DB_USERNAME
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cicd-demo-secret
+                key: DB_PASSWORD
 
         ports:
         - containerPort: 8080
